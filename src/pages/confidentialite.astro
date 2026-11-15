@@ -1,0 +1,32 @@
+---
+import Base from "../components/Base.astro";
+import { site } from "../config/site";
+
+const demoParagraphs = [
+  "Ce site de démonstration ne dépose pas de cookie, n’utilise pas d’outil de mesure d’audience et n’intègre pas de pisteur publicitaire.",
+  "La simulation de devis ne demande ni nom, ni téléphone, ni adresse e-mail. Les choix restent dans la page, le temps de la visite, puis disparaissent lorsque vous recommencez ou quittez. Ils ne sont pas transmis.",
+  "La fonction « Visualisez votre entreprise » modifie le nom et la couleur affichés dans votre navigateur. Ces choix ne sont pas enregistrés, ni dans un compte, ni dans le stockage local.",
+  `La demande de création de site prépare un message dans votre propre application de messagerie, à destination de ${site.inquiry.recipient}. Le contenu n’est pas reçu, stocké ou envoyé par ce site. Si votre messagerie s’ouvre, c’est votre application qui transmet le message, selon ses propres conditions.`,
+  "Un envoi direct depuis le formulaire, sans passer par votre messagerie, n’est pas activé. Il supposerait un prestataire d’e-mail, un expéditeur vérifié, des identifiants tenus hors du code, une information claire et une durée de conservation. Rien de tout cela n’est en place ici.",
+  `Pour une question sur ces informations, écrivez à ${site.inquiry.recipient}. Cette adresse concerne le site de démonstration, pas une entreprise d’électricité.`,
+];
+const paragraphs =
+  site.mode === "client" && site.legal.clientSupplied
+    ? site.legal.privacy.split(/\n\n+/).filter(Boolean)
+    : demoParagraphs;
+---
+
+<Base
+  title="Confidentialité"
+  description="Informations sur les données du site de démonstration VOLT : aucun stockage des demandes simulées."
+>
+  <article class="legal wrap">
+    <p class="kicker">Données</p>
+    <h1>Confidentialité</h1>
+    <div class="prose">
+      {paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+  </article>
+</Base>

@@ -1,0 +1,28 @@
+---
+import { site } from "../config/site";
+---
+
+{site.showAgencyCta && (
+  <section class="agency band" aria-labelledby="agency-band-title">
+    <div class="wrap">
+      <p class="kicker">Création de sites — hors entreprise VOLT</p>
+      <h2 id="agency-band-title">Et si ce site devenait le vôtre ?</h2>
+      <p class="lede">
+        Une vitrine de cette tenue, avec votre nom, vos chantiers réels et vos
+        informations vérifiées.
+      </p>
+      <div class="cluster stack">
+        <button class="btn btn-primary" type="button" data-open="agency-dialog">
+          Je veux un site comme celui-ci
+        </button>
+        <a class="btn btn-ghost" href={`mailto:${site.inquiry.recipient}`}>
+          Écrire à {site.inquiry.recipient}
+        </a>
+      </div>
+      <p class="note">
+        Le lien e-mail ouvre votre application de messagerie. Aucun message
+        n’est envoyé par ce site.
+      </p>
+    </div>
+  </section>
+)}

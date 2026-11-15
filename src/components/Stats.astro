@@ -1,0 +1,20 @@
+---
+import { site, FICTION_STATS } from "../config/site";
+---
+
+<section class="section band" aria-labelledby="stats-title">
+  <div class="wrap">
+    <p class="kicker">{site.showFictionLabels ? FICTION_STATS : "Repères"}</p>
+    <h2 id="stats-title" class="stack">
+      Une composition de chiffres, pas une preuve.
+    </h2>
+    <div class="stats-grid">
+      {site.stats.map((stat) => (
+        <article>
+          <p class="stat-value">{stat.value}</p>
+          <p>{stat.label}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

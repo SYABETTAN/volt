@@ -1,0 +1,51 @@
+---
+import { site, DISCLAIMER } from "../config/site";
+---
+
+<footer class="footer band">
+  <div class="wrap">
+    <p class="brand-meta">{site.business.descriptor}</p>
+    <p class="footer-brand" data-brand>
+      {site.business.brand}
+    </p>
+    <div class="footer-grid">
+      <div>
+        {site.showFictionLabels && <p>{DISCLAIMER}</p>}
+        <p class="footer-meta">
+          Aucune adresse d’établissement n’est publiée. VOLT n’est pas une
+          entreprise immatriculée.
+        </p>
+      </div>
+      <nav class="footer-links" aria-label="Pied de page">
+        {site.navigation.map((item) => (
+          <a href={item.href}>{item.label}</a>
+        ))}
+        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/confidentialite">Confidentialité</a>
+      </nav>
+      <div>
+        {site.showAgencyCta && (
+          <>
+            <p>
+              Pour un site de ce type, le contact est distinct de l’électricien
+              fictif.
+            </p>
+            <p class="stack">
+              <a href={`mailto:${site.inquiry.recipient}`}>
+                {site.inquiry.recipient}
+              </a>
+            </p>
+            <p class="note">Ce lien ouvre votre application de messagerie.</p>
+            <button
+              class="btn btn-primary stack"
+              type="button"
+              data-open="agency-dialog"
+            >
+              Je veux un site comme celui-ci
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+</footer>

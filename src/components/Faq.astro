@@ -1,0 +1,24 @@
+---
+import { site } from "../config/site";
+---
+
+<section class="section wrap" aria-labelledby="faq-title">
+  <div class="section-head">
+    <div>
+      <p class="kicker">Questions</p>
+      <h2 id="faq-title">Ce qu’il est utile de savoir.</h2>
+    </div>
+    <p>
+      Des réponses directes, y compris sur ce qui est fictif dans cette
+      démonstration.
+    </p>
+  </div>
+  <div class="faq-list">
+    {site.faqs.map((item, index) => (
+      <details open={index === 0}>
+        <summary>{item.question}</summary>
+        <p>{item.answer}</p>
+      </details>
+    ))}
+  </div>
+</section>

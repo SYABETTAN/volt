@@ -1,0 +1,29 @@
+---
+import { site } from "../config/site";
+---
+
+<section class="section wrap" id="prestations" aria-labelledby="services-title">
+  <div class="section-head">
+    <div>
+      <p class="kicker">Prestations</p>
+      <h2 id="services-title">Le métier, sans détour.</h2>
+    </div>
+    <p>
+      Sept familles de travaux, rédigées comme sur le site d’une entreprise
+      réelle. Les bornes de recharge sont ici un exemple de rubrique, pas une
+      autorisation affichée.
+    </p>
+  </div>
+  <div>
+    {site.services.map((service) => (
+      <article class="service">
+        <p class="service-no">{service.number}</p>
+        <h3>{service.title}</h3>
+        <p>{service.summary}</p>
+        <a href="#devis">
+          En parler<span class="sr-only">, {service.title}</span>
+        </a>
+      </article>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Démonstration fictive : les pages envoient noindex.
+# Ne pas interdire l'exploration, afin que cette consigne puisse être lue.

@@ -1,0 +1,26 @@
+---
+import { site } from "../config/site";
+---
+
+<section class="section wrap" id="approche" aria-labelledby="approach-title">
+  <div class="section-head">
+    <div>
+      <p class="kicker">Notre approche</p>
+      <h2 id="approach-title">Un déroulé possible.</h2>
+    </div>
+    <p>
+      Illustration d’un parcours client, et non l’historique vérifié d’une
+      entreprise. Un site réel reprendrait ici la façon de travailler
+      effectivement pratiquée.
+    </p>
+  </div>
+  <ol class="steps">
+    {site.process.map((step) => (
+      <li class="step">
+        <span>{step.number}</span>
+        <h3>{step.title}</h3>
+        <p>{step.summary}</p>
+      </li>
+    ))}
+  </ol>
+</section>

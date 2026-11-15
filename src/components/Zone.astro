@@ -1,0 +1,44 @@
+---
+import { Image } from "astro:assets";
+import { site } from "../config/site";
+import paris from "../assets/photos/rooftops.jpg";
+---
+
+<section class="section wrap" id="zone" aria-labelledby="zone-title">
+  <div class="section-head">
+    <div>
+      <p class="kicker">Zone d’intervention</p>
+      <h2 id="zone-title">Paris, à titre d’exemple.</h2>
+    </div>
+    <p>{site.zones.note}</p>
+  </div>
+  <div class="zone-layout">
+    <figure>
+      <Image
+        src={paris}
+        alt="Pont Alexandre-III éclairé au crépuscule, avec les lampadaires et la Seine."
+        widths={[640, 960, 1400]}
+        sizes="(min-width: 70rem) 36vw, 100vw"
+        quality={68}
+        class="media"
+      />
+      <figcaption>
+        Visuel illustratif de Paris. Ce pont n’est pas un chantier.
+      </figcaption>
+    </figure>
+    <div>
+      <h3>Arrondissements</h3>
+      <ul class="arrs">
+        {site.zones.arrondissements.map((item) => (
+          <li class="arr">{item}</li>
+        ))}
+      </ul>
+      <h3 class="stack">Communes voisines, en exemple</h3>
+      <ul class="communes">
+        {site.zones.communes.map((item) => (
+          <li class="commune">{item}</li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>

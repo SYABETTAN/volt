@@ -1,0 +1,35 @@
+---
+import { site, FICTION_REVIEWS } from "../config/site";
+---
+
+<section class="section wrap" aria-labelledby="reviews-title">
+  <div class="section-head">
+    <div>
+      <p class="kicker">{site.showFictionLabels ? FICTION_REVIEWS : "Avis"}</p>
+      <h2 id="reviews-title">La parole des clients, lorsqu’elle est réelle.</h2>
+    </div>
+    <p>
+      Le composant est prêt pour de vrais retours. Dans cette démonstration, les
+      trois textes sont inventés et ne doivent pas être lus comme des
+      témoignages.
+    </p>
+  </div>
+  <div class="quotes">
+    {site.testimonials.map((item) => (
+      <figure class="quote">
+        <q>{item.quote}</q>
+        <footer>
+          {item.author}
+          <br />
+          {item.context}
+          {item.fictional && (
+            <>
+              <br />
+              Exemple fictif
+            </>
+          )}
+        </footer>
+      </figure>
+    ))}
+  </div>
+</section>

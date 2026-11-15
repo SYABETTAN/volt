@@ -1,0 +1,43 @@
+---
+import { Image } from "astro:assets";
+import { site } from "../config/site";
+import hero from "../assets/photos/hero-interior.jpg";
+---
+
+<section class="hero wrap" aria-labelledby="hero-title">
+  <div>
+    <p class="eyebrow">
+      <span data-brand>{site.business.brand}</span> · {site.business.cityLabel}
+    </p>
+    <h1 id="hero-title" class="display">
+      L’électricité, pensée pour votre quotidien.
+    </h1>
+    <span class="rule" aria-hidden="true"></span>
+    <p class="lede">
+      Installation, rénovation et mise en sécurité électrique à Paris. Une
+      présentation nette, à la mesure du soin attendu sur place.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#devis">
+        Simuler un devis
+      </a>
+      <a class="btn btn-ghost" href="#realisations">
+        Voir les réalisations
+      </a>
+    </div>
+  </div>
+  <figure>
+    <Image
+      src={hero}
+      alt="Séjour contemporain baigné de soleil, avec canapé de cuir, fauteuils clairs et grandes fenêtres."
+      widths={[640, 960, 1280, 1600]}
+      sizes="(min-width: 62rem) 52vw, 100vw"
+      quality={68}
+      priority
+      class="media"
+    />
+    <figcaption>
+      Visuel illustratif. Cette photographie n’est pas un chantier VOLT.
+    </figcaption>
+  </figure>
+</section>

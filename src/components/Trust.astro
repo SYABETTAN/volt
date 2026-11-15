@@ -1,0 +1,34 @@
+---
+const points = [
+  {
+    title: "Des prestations nommées clairement",
+    text: "Chaque famille de travaux est présentée en quelques lignes, sans catalogue opaque.",
+  },
+  {
+    title: "Un échange préparé",
+    text: "Le parcours de devis montre ce qu’il est utile de préciser avant un premier contact.",
+  },
+  {
+    title: "Une intervention expliquée",
+    text: "Le déroulé, de la prise de contact au suivi, reste visible et compréhensible.",
+  },
+  {
+    title: "Une image tenue",
+    text: "La typographie, les photographies et les espaces donnent du sérieux sans masquer le métier.",
+  },
+];
+---
+
+<section class="wrap" aria-labelledby="trust-title">
+  <h2 id="trust-title" class="sr-only">
+    Ce que la page rend lisible
+  </h2>
+  <div class="trust">
+    {points.map((point) => (
+      <article>
+        <h3>{point.title}</h3>
+        <p>{point.text}</p>
+      </article>
+    ))}
+  </div>
+</section>

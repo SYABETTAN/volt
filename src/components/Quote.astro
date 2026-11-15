@@ -1,0 +1,83 @@
+---
+import { site } from "../config/site";
+---
+
+<section class="section wrap" id="devis" aria-labelledby="quote-title">
+  <div class="quote-layout">
+    <div>
+      <p class="kicker">Contact</p>
+      <h2 id="quote-title">Simuler un devis.</h2>
+      <p class="lede stack">
+        Démonstration — aucune demande n’est envoyée. Un site réel demanderait
+        ensuite un moyen de vous joindre. Celui-ci ne collecte ni nom, ni
+        téléphone, ni e-mail.
+      </p>
+    </div>
+    <div class="panel">
+      <form id="quote-demo">
+        <p id="quote-progress">Étape 1 sur 3 — la prestation</p>
+        <div data-quote-step="1" class="stack">
+          <fieldset>
+            <legend>Quelle prestation présenter ?</legend>
+            {site.services.map((service) => (
+              <label class="choice">
+                <input type="radio" name="prestation" value={service.title} />
+                <span>{service.title}</span>
+              </label>
+            ))}
+          </fieldset>
+        </div>
+        <div data-quote-step="2" class="stack" hidden>
+          <fieldset>
+            <legend>Type de lieu</legend>
+            <label class="choice">
+              <input type="radio" name="lieu" value="Appartement" />
+              <span>Appartement</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="lieu" value="Maison" />
+              <span>Maison</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="lieu" value="Local" />
+              <span>Local</span>
+            </label>
+          </fieldset>
+          <label class="field stack" for="horizon">
+            Horizon souhaité, sans engagement de délai
+            <select id="horizon" name="horizon">
+              <option value="">Choisir</option>
+              <option>Dès que possible</option>
+              <option>Dans le mois</option>
+              <option>Plus tard</option>
+            </select>
+          </label>
+        </div>
+        <div data-quote-step="3" class="stack" hidden>
+          <p id="quote-summary"></p>
+          <p class="note">
+            Terminer n’envoie rien et n’enregistre rien sur cet appareil.
+          </p>
+        </div>
+        <p id="quote-error" class="field-error" role="alert" hidden></p>
+        <div class="actions">
+          <button class="btn btn-ghost" type="button" id="quote-back" hidden>
+            Retour
+          </button>
+          <button class="btn btn-primary" type="button" id="quote-next">
+            Continuer
+          </button>
+        </div>
+      </form>
+      <div id="quote-done" hidden>
+        <p>
+          Simulation terminée. Aucune demande n’a été transmise, enregistrée ou
+          envoyée à une entreprise.
+        </p>
+        <button class="btn btn-ghost stack" type="button" id="quote-restart">
+          Recommencer la simulation
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

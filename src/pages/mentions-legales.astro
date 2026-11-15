@@ -1,0 +1,31 @@
+---
+import Base from "../components/Base.astro";
+import { site } from "../config/site";
+
+const demoParagraphs = [
+  "VOLT est un nom de démonstration. Il ne désigne pas une entreprise immatriculée, et ce site ne publie ni SIRET, ni adresse d’établissement, ni numéro de téléphone professionnel.",
+  "L’éditeur de cette démonstration est joignable à syabettan@gmail.com pour les demandes concernant la création d’un site. Cette adresse ne reçoit pas de demandes d’intervention électrique : le formulaire de devis est une simulation.",
+  "Les photographies proviennent d’une banque d’images libre de droits commerciaux et servent d’illustration. Elles ne représentent pas des chantiers réalisés pour des clients de VOLT.",
+  "L’hébergement prévu est assuré par Vercel Inc. Aucun cookie et aucun traceur publicitaire ne sont déposés par ce site.",
+  "La création de sites présentée dans l’encart distinct est une offre de prestation numérique. Elle est séparée de l’identité fictive VOLT.",
+];
+const paragraphs =
+  site.mode === "client" && site.legal.clientSupplied
+    ? site.legal.mentions.split(/\n\n+/).filter(Boolean)
+    : demoParagraphs;
+---
+
+<Base
+  title="Mentions légales"
+  description="Mentions légales du site de démonstration VOLT, entreprise fictive d’électricité à Paris."
+>
+  <article class="legal wrap">
+    <p class="kicker">Informations</p>
+    <h1>Mentions légales</h1>
+    <div class="prose">
+      {paragraphs.map((paragraph) => (
+        <p>{paragraph}</p>
+      ))}
+    </div>
+  </article>
+</Base>
