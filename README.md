@@ -48,7 +48,7 @@ Voir `docs/TEMPLATE_USAGE.md`. Le mode `client` ne se construit que si l’ident
 
 ## Dépôt et déploiement
 
-Dépôt privé prévu : `SYABETTAN/volt-electricien-demo`. Déploiement : `docs/VERCEL_DEPLOYMENT.md`. Le site fictif doit rester `noindex`. Ne le publiez pas sur un plan Vercel Hobby s’il sert à la prospection commerciale.
+Dépôt privé : [SYABETTAN/volt-electricien-demo](https://github.com/SYABETTAN/volt-electricien-demo). Déploiement : `docs/VERCEL_DEPLOYMENT.md`. Le site fictif doit rester `noindex`. Ne le publiez pas sur un plan Vercel Hobby s’il sert à la prospection commerciale.
 
 ## Documentation
 
