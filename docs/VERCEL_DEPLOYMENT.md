@@ -4,8 +4,8 @@ Le projet est un site statique Astro. Réglage attendu : framework Astro, comman
 
 ## Avant de publier
 
-1. Le dépôt GitHub `SYABETTAN/volt-electricien-demo` doit être la source.
-2. Le compte Vercel doit être un plan Pro ou Enterprise. Le plan Hobby est réservé à un usage personnel non commercial. Cette démonstration sert à la prospection : ne pas la publier sur Hobby.
+1. Le dépôt GitHub public `SYABETTAN/volt` est la source.
+2. L’hébergement retenu pour l’instant est l’équipe Hobby « Samuel Abettan's projects », projet nommé `volt`. Le plan Hobby reste limité à un usage personnel non commercial dans les conditions Vercel ; ce choix est explicite et temporaire.
 3. Ne pas acheter de domaine ni d’option payante sans accord explicite.
 4. Ne pas coller de secret dans le dépôt. `PUBLIC_SITE_URL` peut être ajouté dans Vercel après la première URL réelle, puis le site reconstruit pour les liens canoniques.
 
@@ -28,8 +28,10 @@ Sur un plan Pro, activer une alerte de budget dans les réglages de facturation 
 
 Ne pas basculer vers un autre hébergeur en silence. Noter l’étape exacte : connexion CLI, équipe, plan, ou droit de créer un projet.
 
-## Constat du 15 novembre 2026
+## Publication du 15 novembre 2026
 
-La CLI Vercel 54.6.1 est connectée au compte `syabettan-8423`. La seule équipe accessible est « Samuel Abettan's projects » (`team_m6s5ebPCh7y7ubDmVfpfN6NV`, rôle OWNER). Son plan facturé est `hobby` (`planIteration: legacy`, statut `active`, `createdDirectToHobby: true`). Aucun projet nommé `volt-electricien-demo` n’existe sur cette équipe.
+Équipe « Samuel Abettan's projects » (`team_m6s5ebPCh7y7ubDmVfpfN6NV`), plan Hobby, projet `volt` (`prj_SQrfreXXyuw0gTIrL4JEtMix65mP`). Déploiement de production `dpl_3Ld35BwRtVF3gNLm7KpQ3B1nS25j`, commit `7a6327d31728654b4d2aac0bd4cbe626c1669287`.
 
-Aucun déploiement n’a été lancé. Publier cette démonstration commerciale sur Hobby irait contre les conditions d’usage. Pour continuer : passer cette équipe en Pro, ou donner accès à une équipe Pro ou Enterprise déjà payée, puis importer le dépôt GitHub avec la commande `pnpm build` et le dossier `dist`. Ne pas acheter le plan depuis cet outillage sans un accord explicite.
+URL à envoyer : https://volt-samuel-abettans-projects.vercel.app
+
+Vérifié : HTTPS, réponse 200 sans authentification, mention « Site de démonstration — entreprise fictive. », en-tête `X-Robots-Tag: noindex, nofollow, noarchive`. L’authentification Vercel ne s’applique qu’aux previews. `volt.vercel.app` est déjà pris par un autre site.
