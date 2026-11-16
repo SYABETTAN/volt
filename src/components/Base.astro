@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { DEMO_ORIGIN, site } from "../config/site";
 import { serializeJsonLd, structuredData } from "../lib/schema";
+import CommercialLayer from "./CommercialLayer.astro";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
 
@@ -58,6 +59,7 @@ const ogImage = origin ? new URL("/og.jpg", origin).href : undefined;
       <slot />
     </main>
     <Footer />
+    <CommercialLayer />
     <script>
       import { initInterface } from "../scripts/ui";
       initInterface();

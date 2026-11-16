@@ -1,7 +1,5 @@
 ---
-import { ACCENT_PRESETS } from "../lib/accents";
 import { site, DISCLAIMER } from "../config/site";
-import { formatEuros, formatMonthly } from "../lib/format";
 
 const brand = site.business.brand;
 ---
@@ -14,9 +12,12 @@ const brand = site.business.brand;
       </a>
       {site.showFictionLabels && <p>{DISCLAIMER}</p>}
       {site.showAgencyCta && (
-        <button type="button" data-open="agency-dialog">
-          Et si ce site devenait le vôtre ?
-        </button>
+        <p class="bar-offer">
+          <span>Vous êtes électricien ?</span>
+          <button type="button" data-open="personalize-dialog">
+            Visualiser mon futur site
+          </button>
+        </p>
       )}
     </div>
   </div>
@@ -33,15 +34,6 @@ const brand = site.business.brand;
       ))}
     </nav>
     <div class="header-actions">
-      {site.mode === "demo" && (
-        <button
-          class="btn btn-quiet desktop-only"
-          type="button"
-          data-open="personalize-dialog"
-        >
-          Visualiser
-        </button>
-      )}
       <a class="btn btn-primary" href="/#devis">
         Devis
       </a>
@@ -72,222 +64,19 @@ const brand = site.business.brand;
       ))}
       {site.mode === "demo" && (
         <button type="button" data-open="personalize-dialog">
-          Visualiser
+          Visualiser mon futur site
         </button>
       )}
       {site.showAgencyCta && (
         <button type="button" data-open="agency-dialog">
-          Un site comme celui-ci
+          Je veux mon site
+        </button>
+      )}
+      {site.showAgencyCta && (
+        <button type="button" data-open="diagnostic-dialog">
+          Diagnostic gratuit
         </button>
       )}
     </nav>
   </div>
 </dialog>
-
-{site.mode === "demo" && (
-  <dialog id="personalize-dialog" aria-labelledby="personalize-title">
-    <div class="dialog-panel">
-      <div class="dialog-head">
-        <div>
-          <p class="kicker">Aperçu temporaire</p>
-          <h2 id="personalize-title">Visualisez votre entreprise.</h2>
-        </div>
-        <button class="btn btn-ghost" type="button" data-close>
-          Fermer
-        </button>
-      </div>
-      <p class="lede stack">
-        Le nom et la couleur changent uniquement dans votre navigateur. Les
-        projets, avis, chiffres et certifications restent des exemples fictifs.
-        Rien n’est enregistré.
-      </p>
-      <p class="preview-brand" data-brand>
-        {brand}
-      </p>
-      <p class="note">{site.business.descriptor}</p>
-      <form id="personalize-form" class="fields stack" method="dialog">
-        <label class="field" for="brand-name">
-          Nom de l’entreprise
-          <input
-            id="brand-name"
-            name="brand"
-            maxlength="32"
-            autocomplete="organization"
-            value={brand}
-          />
-        </label>
-        <fieldset>
-          <legend>Couleur d’accent</legend>
-          <div class="swatches">
-            {ACCENT_PRESETS.map((preset) => (
-              <label class={`swatch swatch-${preset.id}`}>
-                <input
-                  type="radio"
-                  name="accent"
-                  value={preset.id}
-                  checked={preset.id === "volt"}
-                />
-                <span>
-                  <i aria-hidden="true"></i>
-                  {preset.label}
-                </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-        <div class="actions">
-          <button class="btn btn-ghost" type="button" id="brand-reset">
-            Revenir à VOLT
-          </button>
-        </div>
-      </form>
-      <p id="brand-status" class="sr-only" aria-live="polite"></p>
-    </div>
-  </dialog>
-)}
-
-{site.showAgencyCta && (
-  <dialog id="agency-dialog" aria-labelledby="agency-title">
-    <div class="dialog-panel">
-      <div class="dialog-head">
-        <div>
-          <p class="kicker">Création de sites — hors entreprise VOLT</p>
-          <h2 id="agency-title">Je veux un site comme celui-ci</h2>
-        </div>
-        <button class="btn btn-ghost" type="button" data-close>
-          Fermer
-        </button>
-      </div>
-      <p class="lede stack">
-        VOLT est une démonstration. Le même cadre peut présenter votre
-        entreprise, avec vos informations vérifiées, vos visuels et vos mentions
-        légales.
-      </p>
-      <div class="packages">
-        {site.packages.map((offer) => (
-          <button
-            class:list={["package", offer.featured && "package-featured"]}
-            type="button"
-            data-package={offer.id}
-            aria-pressed="false"
-          >
-            {offer.featured && <span class="tag">Offre principale</span>}
-            <h3>{offer.name}</h3>
-            <p class="price">{formatEuros(offer.creationPrice)}</p>
-            <p>
-              {formatMonthly(offer.monthlyPrice)} · création{" "}
-              {formatEuros(offer.creationPrice)}
-            </p>
-            <p>{offer.summary}</p>
-            <ul>
-              {offer.includes.map((item) => (
-                <li>{item}</li>
-              ))}
-            </ul>
-          </button>
-        ))}
-      </div>
-      <p class="note">
-        {site.taxLabel} {site.priceExclusions}
-      </p>
-      <form id="inquiry-form" class="fields stack" method="dialog" novalidate>
-        <p class="kicker">Écrire au créateur du site</p>
-        <label class="field" for="inquiry-name">
-          Nom / entreprise
-          <input
-            id="inquiry-name"
-            name="name"
-            autocomplete="organization"
-            required
-            maxlength="80"
-          />
-        </label>
-        <p id="inquiry-name-error" class="field-error" hidden></p>
-        <label class="field" for="inquiry-email">
-          E-mail professionnel
-          <input
-            id="inquiry-email"
-            name="email"
-            type="email"
-            autocomplete="email"
-            required
-            maxlength="120"
-          />
-        </label>
-        <p id="inquiry-email-error" class="field-error" hidden></p>
-        <label class="field" for="inquiry-phone">
-          Téléphone, optionnel
-          <input
-            id="inquiry-phone"
-            name="phone"
-            type="tel"
-            autocomplete="tel"
-            maxlength="20"
-          />
-        </label>
-        <p id="inquiry-phone-error" class="field-error" hidden></p>
-        <label class="field" for="inquiry-website">
-          Site actuel, optionnel
-          <input
-            id="inquiry-website"
-            name="website"
-            type="text"
-            inputmode="url"
-            maxlength="120"
-          />
-        </label>
-        <p id="inquiry-website-error" class="field-error" hidden></p>
-        <label class="field" for="inquiry-package">
-          Offre
-          <select id="inquiry-package" name="packageId" required>
-            <option value="">Choisir une offre</option>
-            {site.packages.map((offer) => (
-              <option value={offer.id}>{offer.name}</option>
-            ))}
-          </select>
-        </label>
-        <p id="inquiry-packageId-error" class="field-error" hidden></p>
-        <label class="field" for="inquiry-message">
-          Message
-          <textarea
-            id="inquiry-message"
-            name="message"
-            required
-            maxlength="1000"
-          ></textarea>
-        </label>
-        <p id="inquiry-message-error" class="field-error" hidden></p>
-        <label class="choice" for="inquiry-consent">
-          <input id="inquiry-consent" name="consent" type="checkbox" />
-          <span>
-            Je confirme que ce bouton ouvre mon application de messagerie. Ce
-            site n’envoie rien lui-même. Destinataire : {site.inquiry.recipient}
-            .
-          </span>
-        </label>
-        <p id="inquiry-consent-error" class="field-error" hidden></p>
-        <div class="hp" aria-hidden="true">
-          <label>
-            Société de confirmation
-            <input
-              name="company_website_confirm"
-              tabindex="-1"
-              autocomplete="off"
-            />
-          </label>
-        </div>
-        <div class="actions">
-          <button class="btn btn-primary" type="submit">
-            Préparer l’e-mail
-          </button>
-        </div>
-        <p
-          id="inquiry-status"
-          class="status"
-          role="status"
-          aria-live="polite"
-        ></p>
-      </form>
-    </div>
-  </dialog>
-)}

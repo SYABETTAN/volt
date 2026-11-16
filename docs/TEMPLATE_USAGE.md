@@ -12,6 +12,6 @@
 10. Si le site doit être indexé : `indexing: "index"`, retirez `noindex` de `vercel.json`, ajoutez `PUBLIC_SITE_URL`, et adaptez `tests/unit/headers.test.ts` dans le même commit.
 11. Branchez le devis réel avant la mise en ligne. Un endpoint doit être en HTTPS, avec anti-spam et conservation documentée. Tant que ce n’est pas prêt, `quoteFlow: "mailto"` vers l’e-mail de l’entreprise, avec un libellé qui dit que la messagerie s’ouvre.
 
-Le mode client ne réactive pas l’appel « Je veux un site comme celui-ci ». Ce bandeau appartient à la démonstration commerciale.
+Le mode client ne réactive pas le bandeau « Visualiser mon futur site » ni le dialogue d’offre. Cette couche appartient à la démonstration commerciale.
 
 Les pages `mentions-legales` et `confidentialite` basculent sur les textes du client dès que le mode et `clientSupplied` sont cohérents. Elles ne conservent pas le texte VOLT en parallèle.

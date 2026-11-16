@@ -185,6 +185,16 @@
   font-size: 0.82rem;
   letter-spacing: 0.01em;
 }
+.bar-offer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.7rem;
+  margin: 0;
+}
+.bar-offer span {
+  color: #e7e1d6;
+}
 .demo-bar button,
 .demo-bar a.bar-link {
   min-height: 44px;
@@ -1038,10 +1048,62 @@ dialog::backdrop {
     order: 0;
   }
 }
-.hero-commercial {
-  flex-basis: 100%;
-  justify-content: flex-start;
-  padding-inline: 0;
+.offer-main {
+  margin-top: 1.2rem;
+}
+.commercial-block {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.3rem;
+}
+.commercial-block h3,
+.fields h3 {
+  font-size: 1.2rem;
+}
+.steps {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.steps li {
+  display: grid;
+  gap: 0.2rem;
+}
+.steps span {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.commercial-more {
+  margin-top: 1rem;
+}
+.commercial-more summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 580;
+}
+.commercial-more p {
+  margin-top: 0.45rem;
+}
+.packages-alt {
+  margin-top: 0.75rem;
+}
+.follow-up {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-line);
+}
+@media (min-width: 48rem) {
+  .steps,
+  .packages-alt {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .menu-dialog {

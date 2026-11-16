@@ -17,7 +17,7 @@ Le HTML généré ne contient pas de balise `<style>` ni d’attribut `style`. L
 
 ## Formulaire de création de site
 
-Validation partagée entre Vitest et le navigateur (`src/lib/inquiry.ts`) : longueurs, e-mail, téléphone optionnel, site optionnel, offre connue, consentement. Les retours ligne et les caractères de contrôle sont retirés du corps du `mailto` pour limiter l’injection d’en-têtes.
+Validation partagée entre Vitest et le navigateur (`src/lib/inquiry.ts`) : nom, entreprise, e-mail, téléphone facultatif, site, offre pour une présentation, situation pour un diagnostic. Les retours ligne et les caractères de contrôle sont retirés du corps du `mailto` pour limiter l’injection d’en-têtes. Les événements de parcours passent par `sanitizeEventDetail` : une adresse e-mail, une URL ou une longue suite de chiffres est retirée du détail.
 
 Un champ caché sert de pot de miel. S’il est rempli, aucun `mailto` n’est ouvert. Ce n’est pas une protection suffisante pour un futur endpoint : celui-ci devra limiter le débit et vérifier l’origine.
 

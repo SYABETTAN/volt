@@ -1,18 +1,16 @@
 import { isAccentId } from "../lib/accents";
+import { track } from "../lib/analytics";
 import {
   buildInquiryMailto,
   validateInquiry,
   type InquiryInput,
+  type RequestKind,
+  type SiteSituation,
 } from "../lib/inquiry";
 import { sanitizeBrandName } from "../lib/sanitize";
 
-const PACKAGE_NAMES: Record<string, string> = {
-  essentiel: "Essentiel",
-  acquisition: "Acquisition locale",
-  croissance: "Croissance",
-};
-
 export function initInterface(): void {
+  if (document.getElementById("agency-dialog")) track("demo_viewed");
   bindDialogs();
   initPersonalization();
   initInquiry();
@@ -34,6 +32,7 @@ function bindDialogs(): void {
         if (other !== dialog && other.open) other.close();
       });
       if (!dialog.open) dialog.showModal();
+      if (id === "agency-dialog") track("commercial_offer_opened");
       if (
         trigger instanceof HTMLButtonElement &&
         trigger.hasAttribute("aria-controls")
@@ -76,6 +75,9 @@ function initPersonalization(): void {
   const fallback = root.dataset.defaultBrand || "VOLT";
   if (!form || !input || !reset) return;
 
+  let started = false;
+  let completed = false;
+  const nextStep = document.getElementById("personalize-next");
   const apply = (rawName: string, accent: string) => {
     const cleaned = sanitizeBrandName(rawName);
     const brand = cleaned || fallback;
@@ -83,10 +85,23 @@ function initPersonalization(): void {
       node.textContent = brand;
     });
     if (isAccentId(accent)) root.dataset.accent = accent;
-    const titleBrand = brand;
-    document.title = `${titleBrand} — Électricité Paris | Site de démonstration`;
-    if (status)
-      status.textContent = `Aperçu : ${brand}. Démonstration inchangée.`;
+    document.title = `${brand} — Électricité Paris | Site de démonstration`;
+    if (status) {
+      status.textContent =
+        brand === fallback
+          ? "Aperçu VOLT. Démonstration inchangée."
+          : `Aperçu : ${brand}. Les exemples fictifs restent ceux de la démonstration.`;
+    }
+    if (nextStep) nextStep.hidden = brand === fallback;
+    if (!started && cleaned && cleaned !== fallback) {
+      started = true;
+      track("personalization_started");
+    }
+    if (brand !== fallback && !completed) {
+      completed = true;
+      track("personalization_completed");
+    }
+    if (brand === fallback) completed = false;
   };
 
   const selectedAccent = () => {
@@ -120,10 +135,44 @@ function initPersonalization(): void {
 }
 
 function initInquiry(): void {
-  const form = document.querySelector<HTMLFormElement>("#inquiry-form");
-  const status = document.querySelector<HTMLElement>("#inquiry-status");
-  if (!form || !status) return;
   const recipient = document.documentElement.dataset.inquiryTo || "";
+  document
+    .querySelectorAll<HTMLFormElement>("form[data-inquiry]")
+    .forEach((form) => bindInquiry(form, recipient));
+
+  const presentation =
+    document.querySelector<HTMLFormElement>("#presentation-form");
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-package]")
+    .forEach((card) => {
+      card.addEventListener("click", () => {
+        const select = presentation?.querySelector<HTMLSelectElement>(
+          "select[name='packageId']",
+        );
+        if (!select || !card.dataset.package) return;
+        select.value = card.dataset.package;
+        document
+          .querySelectorAll<HTMLButtonElement>("[data-package]")
+          .forEach((other) => {
+            const selected = other === card;
+            other.setAttribute("aria-pressed", selected ? "true" : "false");
+            other.classList.toggle("is-selected", selected);
+            other
+              .closest(".package")
+              ?.classList.toggle("is-selected", selected);
+          });
+        track("package_selected", { package: card.dataset.package });
+        select.focus();
+      });
+    });
+}
+
+function bindInquiry(form: HTMLFormElement, recipient: string): void {
+  const prefix = form.id.replace(/-form$/, "");
+  const status = document.getElementById(`${prefix}-status`);
+  if (!status) return;
+  const kind: RequestKind =
+    form.dataset.inquiry === "diagnostic" ? "diagnostic" : "presentation";
 
   form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -131,30 +180,39 @@ function initInquiry(): void {
       'input[name="company_website_confirm"]',
     );
     if (honeypot?.value) {
-      status.textContent = "Le message n’a pas pu être préparé.";
+      status.textContent =
+        "Le message n’a pas pu être préparé. Aucune demande n’a été transmise.";
+      track("contact_submit_error", { kind, reason: "rejected" });
       return;
     }
 
-    const input = readInquiry(form);
+    const input = readInquiry(form, kind);
     const errors = validateInquiry(input);
     clearErrors(form);
     const fields = Object.keys(errors) as (keyof InquiryInput)[];
     if (fields.length > 0) {
-      fields.forEach((field) => showError(form, field, errors[field] || ""));
+      fields.forEach((field) => showError(prefix, field, errors[field] || ""));
       status.textContent =
         "Le formulaire contient des erreurs. Aucun e-mail n’a été préparé.";
-      const first = form.querySelector<HTMLElement>("[aria-invalid='true']");
-      first?.focus();
+      track("contact_submit_error", { kind, reason: "validation" });
+      (
+        document.getElementById(`${prefix}-${fieldControl(fields[0])}`) ||
+        form.querySelector<HTMLElement>("[aria-invalid='true']")
+      )?.focus();
       return;
     }
 
+    const select = form.querySelector<HTMLSelectElement>(
+      "select[name='packageId']",
+    );
+    const packageName =
+      select?.selectedOptions[0]?.textContent?.trim() || input.packageId;
     try {
-      const href = buildInquiryMailto(
-        input,
-        recipient,
-        PACKAGE_NAMES[input.packageId] || input.packageId,
-      );
-      status.textContent = `Votre application de messagerie devrait s’ouvrir. Le message n’est pas transmis par ce site. S’il ne se passe rien, écrivez à ${recipient}.`;
+      const href = buildInquiryMailto(input, recipient, packageName);
+      status.textContent = `Votre application de messagerie devrait s’ouvrir. Tant que le message ne part pas de votre messagerie, la demande n’est pas transmise. Sinon, écrivez à ${recipient}.`;
+      if (kind === "diagnostic") track("diagnostic_requested");
+      else track("presentation_requested", { package: input.packageId });
+      track("contact_submit_success", { kind });
       const anchor = document.createElement("a");
       anchor.href = href;
       anchor.rel = "nofollow";
@@ -163,43 +221,31 @@ function initInquiry(): void {
       anchor.remove();
     } catch {
       status.textContent =
-        "Le message n’a pas pu être préparé pour la messagerie.";
+        "Le message n’a pas pu être préparé. Aucune demande n’a été transmise.";
+      track("contact_submit_error", { kind, reason: "mailto" });
     }
   });
-
-  document
-    .querySelectorAll<HTMLButtonElement>("[data-package]")
-    .forEach((card) => {
-      card.addEventListener("click", () => {
-        const select =
-          form.querySelector<HTMLSelectElement>("#inquiry-package");
-        if (!select || !card.dataset.package) return;
-        select.value = card.dataset.package;
-        document
-          .querySelectorAll<HTMLButtonElement>("[data-package]")
-          .forEach((other) => {
-            other.setAttribute(
-              "aria-pressed",
-              other === card ? "true" : "false",
-            );
-            other.classList.toggle("is-selected", other === card);
-          });
-        select.focus();
-      });
-    });
 }
 
-function readInquiry(form: HTMLFormElement): InquiryInput {
+function readInquiry(form: HTMLFormElement, kind: RequestKind): InquiryInput {
   const data = new FormData(form);
+  const situation = String(data.get("situation") || "") as SiteSituation;
   return {
+    kind,
     name: String(data.get("name") || ""),
+    company: String(data.get("company") || ""),
     email: String(data.get("email") || ""),
     phone: String(data.get("phone") || ""),
     website: String(data.get("website") || ""),
     packageId: String(data.get("packageId") || ""),
+    situation:
+      situation === "has-site" || situation === "no-site" ? situation : "",
     message: String(data.get("message") || ""),
-    consent: data.get("consent") === "on",
   };
+}
+
+function fieldControl(field: keyof InquiryInput): string {
+  return field === "packageId" ? "package" : field;
 }
 
 function clearErrors(form: HTMLFormElement): void {
@@ -213,18 +259,19 @@ function clearErrors(form: HTMLFormElement): void {
 }
 
 function showError(
-  _form: HTMLFormElement,
+  prefix: string,
   field: keyof InquiryInput,
   message: string,
 ): void {
-  const id =
-    field === "packageId"
-      ? "inquiry-package"
-      : field === "consent"
-        ? "inquiry-consent"
-        : `inquiry-${field}`;
-  const control = document.getElementById(id);
-  const error = document.getElementById(`inquiry-${field}-error`);
+  const id = `${prefix}-${fieldControl(field)}`;
+  const control =
+    document.getElementById(id) ||
+    (field === "situation"
+      ? document.querySelector<HTMLElement>(
+          `#${prefix}-form input[name="situation"]`,
+        )
+      : null);
+  const error = document.getElementById(`${prefix}-${field}-error`);
   if (control) {
     control.setAttribute("aria-invalid", "true");
     if (error) control.setAttribute("aria-describedby", error.id);

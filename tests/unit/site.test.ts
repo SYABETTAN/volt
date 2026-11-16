@@ -84,36 +84,79 @@ describe("nom affiché", () => {
 
 describe("demande réelle", () => {
   const valid = {
-    name: "Martin Électricité",
+    kind: "presentation" as const,
+    name: "Camille Martin",
+    company: "Martin Électricité",
     email: "martin@example.com",
     phone: "",
     website: "",
     packageId: "acquisition",
+    situation: "" as const,
     message: "Je souhaite un site pour présenter mon activité à Paris.",
-    consent: true,
   };
 
   it("signale les champs incomplets", () => {
     const errors = validateInquiry({
       ...valid,
       email: "non",
-      consent: false,
-      message: "court",
+      company: "",
+      message: "x".repeat(1001),
     });
     expect(errors.email).toBeTruthy();
-    expect(errors.consent).toBeTruthy();
+    expect(errors.company).toBeTruthy();
     expect(errors.message).toBeTruthy();
+    expect(errors.kind).toBeUndefined();
+  });
+
+  it("accepte un message vide pour une présentation", () => {
+    expect(validateInquiry({ ...valid, message: "" })).toEqual({});
+  });
+
+  it("exige le site existant pour un diagnostic", () => {
+    const errors = validateInquiry({
+      ...valid,
+      kind: "diagnostic",
+      packageId: "",
+      situation: "has-site",
+      website: "",
+    });
+    expect(errors.website).toBeTruthy();
+    expect(
+      validateInquiry({
+        ...valid,
+        kind: "diagnostic",
+        packageId: "",
+        situation: "no-site",
+        message: "",
+      }),
+    ).toEqual({});
   });
 
   it("prépare un mailto sans prétendre à un envoi", () => {
     const href = buildInquiryMailto(
       valid,
       "syabettan@gmail.com",
-      "Acquisition locale",
+      "VOLT Acquisition locale",
     );
     expect(href.startsWith("mailto:syabettan@gmail.com")).toBe(true);
-    expect(decodeURIComponent(href)).toContain("Aucun envoi automatique");
+    const decoded = decodeURIComponent(href);
+    expect(decoded).toContain("Aucun envoi automatique");
+    expect(decoded).toContain("Martin Électricité");
     expect(href).not.toContain("<");
+  });
+});
+
+describe("événements", () => {
+  it("retire les données personnelles du détail", async () => {
+    const { sanitizeEventDetail } = await import("../../src/lib/analytics");
+    expect(
+      sanitizeEventDetail({
+        kind: "presentation",
+        email: "martin@example.com",
+        note: "https://exemple.fr",
+        phone: "0612345678",
+      }),
+    ).toEqual({ kind: "presentation" });
   });
 });
 

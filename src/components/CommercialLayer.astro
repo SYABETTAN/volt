@@ -1,0 +1,487 @@
+---
+import { ACCENT_PRESETS } from "../lib/accents";
+import {
+  bonuses,
+  commercialFaqs,
+  commercialPromise,
+  commercialSteps,
+  featuredPromise,
+  guaranteeConditions,
+  guaranteeSummary,
+  guaranteeTitle,
+  maintenanceDefinition,
+  proofLine,
+  timelineCaution,
+  timelineConditions,
+  timelineMode,
+  timelinePreview,
+  timelinePublish,
+} from "../data/commercial";
+import { site } from "../config/site";
+import { formatEuros, formatMonthly } from "../lib/format";
+
+const brand = site.business.brand;
+const featured = site.packages.find((offer) => offer.featured);
+const alternatives = site.packages.filter((offer) => !offer.featured);
+const showPreview = site.mode === "demo";
+---
+
+{showPreview && (
+  <dialog id="personalize-dialog" aria-labelledby="personalize-title">
+    <div class="dialog-panel">
+      <div class="dialog-head">
+        <div>
+          <p class="kicker">Aperçu temporaire</p>
+          <h2 id="personalize-title">
+            Imaginez ce site pour votre entreprise.
+          </h2>
+        </div>
+        <button class="btn btn-ghost" type="button" data-close>
+          Fermer
+        </button>
+      </div>
+      <p class="lede stack">
+        Le nom et la couleur changent tout de suite, uniquement dans votre
+        navigateur. Les projets, avis, chiffres et certifications restent des
+        exemples fictifs. Rien n’est enregistré.
+      </p>
+      <p class="preview-brand" data-brand>
+        {brand}
+      </p>
+      <p class="note">{site.business.descriptor}</p>
+      <form id="personalize-form" class="fields stack" method="dialog">
+        <label class="field" for="brand-name">
+          Nom de l’entreprise
+          <input
+            id="brand-name"
+            name="brand"
+            maxlength="32"
+            autocomplete="organization"
+            value={brand}
+          />
+        </label>
+        <fieldset>
+          <legend>Couleur principale</legend>
+          <div class="swatches">
+            {ACCENT_PRESETS.map((preset) => (
+              <label class={`swatch swatch-${preset.id}`}>
+                <input
+                  type="radio"
+                  name="accent"
+                  value={preset.id}
+                  checked={preset.id === "volt"}
+                />
+                <span>
+                  <i aria-hidden="true" />
+                  {preset.label}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="actions">
+          <button class="btn btn-ghost" type="button" id="brand-reset">
+            Revenir à VOLT
+          </button>
+        </div>
+      </form>
+      <div id="personalize-next" class="follow-up" hidden>
+        <p>Vous aimez ce résultat ?</p>
+        <button class="btn btn-primary" type="button" data-open="agency-dialog">
+          Je veux mon site
+        </button>
+        <p class="note">
+          Les projets, avis et chiffres visibles restent des exemples de la
+          démonstration. Ils n’appartiennent pas à l’entreprise saisie.
+        </p>
+      </div>
+      <p id="brand-status" class="sr-only" aria-live="polite" />
+    </div>
+  </dialog>
+)}
+
+{site.showAgencyCta && featured && (
+  <dialog id="agency-dialog" aria-labelledby="agency-title">
+    <div class="dialog-panel">
+      <div class="dialog-head">
+        <div>
+          <p class="kicker">Création de sites — hors entreprise VOLT</p>
+          <h2 id="agency-title">{commercialPromise}</h2>
+        </div>
+        <button class="btn btn-ghost" type="button" data-close>
+          Fermer
+        </button>
+      </div>
+      <p class="lede stack">{featuredPromise}</p>
+      <p class="note">{proofLine}</p>
+
+      <article class="package package-featured offer-main">
+        <span class="tag">Offre principale</span>
+        <h3>{featured.name}</h3>
+        <p class="price">{formatEuros(featured.creationPrice)}</p>
+        <p>
+          {formatMonthly(featured.monthlyPrice)} · création{" "}
+          {formatEuros(featured.creationPrice)}
+        </p>
+        <button
+          class="btn btn-primary"
+          type="button"
+          data-package={featured.id}
+          aria-pressed="true"
+        >
+          Choisir {featured.name}
+        </button>
+        <p>{featured.summary}</p>
+        <ul>
+          {featured.includes.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+        <p class="note">{maintenanceDefinition}</p>
+      </article>
+
+      <details class="commercial-more">
+        <summary>Deux autres formules, selon le besoin</summary>
+        <div class="packages packages-alt">
+          {alternatives.map((offer) => (
+            <article class="package">
+              <h3>{offer.name}</h3>
+              <p class="price">{formatEuros(offer.creationPrice)}</p>
+              <p>
+                {formatMonthly(offer.monthlyPrice)} · création{" "}
+                {formatEuros(offer.creationPrice)}
+              </p>
+              <p>{offer.summary}</p>
+              <ul>
+                {offer.includes.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+              <button
+                class="btn btn-ghost"
+                type="button"
+                data-package={offer.id}
+                aria-pressed="false"
+              >
+                Choisir {offer.name}
+              </button>
+            </article>
+          ))}
+        </div>
+      </details>
+
+      <section class="commercial-block" aria-labelledby="method-title">
+        <h3 id="method-title">Comment ça marche</h3>
+        <ol class="steps">
+          {commercialSteps.map((step) => (
+            <li>
+              <span>{step.number}</span>
+              <strong>{step.title}</strong>
+              <p>{step.summary}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {timelineMode === "indicative" && (
+        <section class="commercial-block" aria-labelledby="timeline-title">
+          <h3 id="timeline-title">Délais visés, à confirmer sur le devis</h3>
+          <ul>
+            <li>{timelinePreview}</li>
+            <li>{timelinePublish}</li>
+          </ul>
+          <ul>
+            {timelineConditions.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <p class="note">{timelineCaution}</p>
+        </section>
+      )}
+
+      <section class="commercial-block" aria-labelledby="guarantee-title">
+        <h3 id="guarantee-title">{guaranteeTitle}</h3>
+        <p>{guaranteeSummary}</p>
+        <ul>
+          {guaranteeConditions.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <section class="commercial-block" aria-labelledby="bonus-title">
+        <h3 id="bonus-title">Trois aides incluses, sans supplément affiché</h3>
+        <ul>
+          {bonuses.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+
+      <p class="note">
+        {site.taxLabel} {site.priceExclusions}
+      </p>
+
+      <form
+        id="presentation-form"
+        class="fields stack"
+        data-inquiry="presentation"
+        method="dialog"
+        novalidate
+      >
+        <h3>Demander une présentation</h3>
+        <p class="note">
+          Ce bouton ouvre votre application de messagerie à destination de{" "}
+          {site.inquiry.recipient}. Ce site n’envoie pas le message et ne le
+          conserve pas. Vous décidez ensuite de l’expédier.
+        </p>
+        <label class="field" for="presentation-name">
+          Nom
+          <input
+            id="presentation-name"
+            name="name"
+            autocomplete="name"
+            required
+            maxlength="80"
+          />
+        </label>
+        <p id="presentation-name-error" class="field-error" hidden />
+        <label class="field" for="presentation-company">
+          Entreprise
+          <input
+            id="presentation-company"
+            name="company"
+            autocomplete="organization"
+            required
+            maxlength="80"
+          />
+        </label>
+        <p id="presentation-company-error" class="field-error" hidden />
+        <label class="field" for="presentation-email">
+          E-mail professionnel
+          <input
+            id="presentation-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="120"
+          />
+        </label>
+        <p id="presentation-email-error" class="field-error" hidden />
+        <label class="field" for="presentation-phone">
+          Téléphone, facultatif
+          <input
+            id="presentation-phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            maxlength="20"
+          />
+        </label>
+        <p id="presentation-phone-error" class="field-error" hidden />
+        <label class="field" for="presentation-website">
+          Site actuel, facultatif
+          <input
+            id="presentation-website"
+            name="website"
+            type="text"
+            inputmode="url"
+            maxlength="160"
+          />
+        </label>
+        <p id="presentation-website-error" class="field-error" hidden />
+        <label class="field" for="presentation-package">
+          Offre retenue
+          <select id="presentation-package" name="packageId" required>
+            {site.packages.map((offer) => (
+              <option value={offer.id} selected={offer.featured}>
+                {offer.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <p id="presentation-packageId-error" class="field-error" hidden />
+        <label class="field" for="presentation-message">
+          Message, facultatif
+          <textarea id="presentation-message" name="message" maxlength="1000" />
+        </label>
+        <p id="presentation-message-error" class="field-error" hidden />
+        <div class="hp" aria-hidden="true">
+          <label>
+            Société de confirmation
+            <input
+              name="company_website_confirm"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </label>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">
+            Préparer la demande de présentation
+          </button>
+        </div>
+        <p
+          id="presentation-status"
+          class="status"
+          role="status"
+          aria-live="polite"
+        />
+      </form>
+
+      <details class="commercial-more">
+        <summary>Questions avant de vous décider</summary>
+        <div class="commercial-block">
+          {commercialFaqs.map((item) => (
+            <details>
+              <summary>{item.question}</summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </details>
+
+      <p class="stack">
+        <button
+          class="btn btn-ghost"
+          type="button"
+          data-open="diagnostic-dialog"
+        >
+          Diagnostic gratuit en 3 points
+        </button>
+      </p>
+    </div>
+  </dialog>
+)}
+
+{site.showAgencyCta && (
+  <dialog id="diagnostic-dialog" aria-labelledby="diagnostic-title">
+    <div class="dialog-panel">
+      <div class="dialog-head">
+        <div>
+          <p class="kicker">Première conversation — hors entreprise VOLT</p>
+          <h2 id="diagnostic-title">
+            Diagnostic gratuit de votre présence internet en 3 points
+          </h2>
+        </div>
+        <button class="btn btn-ghost" type="button" data-close>
+          Fermer
+        </button>
+      </div>
+      <p class="lede stack">
+        La demande ouvre un échange. Elle n’affiche aucun score et n’audite pas
+        un site à distance. Avec un site, les trois points portent sur la
+        présentation mobile, la facilité de contact et la clarté des
+        prestations. Sans site, ils portent sur les informations à présenter,
+        les prestations à mettre en avant et le parcours de contact.
+      </p>
+      <form
+        id="diagnostic-form"
+        class="fields stack"
+        data-inquiry="diagnostic"
+        method="dialog"
+        novalidate
+      >
+        <fieldset>
+          <legend>Votre situation</legend>
+          <label class="choice">
+            <input type="radio" name="situation" value="has-site" required />
+            <span>J’ai déjà un site</span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="situation" value="no-site" />
+            <span>Je n’ai pas encore de site</span>
+          </label>
+        </fieldset>
+        <p id="diagnostic-situation-error" class="field-error" hidden />
+        <label class="field" for="diagnostic-name">
+          Nom
+          <input
+            id="diagnostic-name"
+            name="name"
+            autocomplete="name"
+            required
+            maxlength="80"
+          />
+        </label>
+        <p id="diagnostic-name-error" class="field-error" hidden />
+        <label class="field" for="diagnostic-company">
+          Entreprise
+          <input
+            id="diagnostic-company"
+            name="company"
+            autocomplete="organization"
+            required
+            maxlength="80"
+          />
+        </label>
+        <p id="diagnostic-company-error" class="field-error" hidden />
+        <label class="field" for="diagnostic-email">
+          E-mail professionnel
+          <input
+            id="diagnostic-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required
+            maxlength="120"
+          />
+        </label>
+        <p id="diagnostic-email-error" class="field-error" hidden />
+        <label class="field" for="diagnostic-phone">
+          Téléphone, facultatif
+          <input
+            id="diagnostic-phone"
+            name="phone"
+            type="tel"
+            autocomplete="tel"
+            maxlength="20"
+          />
+        </label>
+        <p id="diagnostic-phone-error" class="field-error" hidden />
+        <label class="field" for="diagnostic-website">
+          Site actuel, si vous en avez un
+          <input
+            id="diagnostic-website"
+            name="website"
+            type="text"
+            inputmode="url"
+            maxlength="160"
+          />
+        </label>
+        <p id="diagnostic-website-error" class="field-error" hidden />
+        <label class="field" for="diagnostic-message">
+          Message, facultatif
+          <textarea id="diagnostic-message" name="message" maxlength="1000" />
+        </label>
+        <p id="diagnostic-message-error" class="field-error" hidden />
+        <p class="note">
+          Ce bouton ouvre votre messagerie vers {site.inquiry.recipient}. Le
+          site ne transmet rien et n’enregistre pas ces informations.
+        </p>
+        <div class="hp" aria-hidden="true">
+          <label>
+            Société de confirmation
+            <input
+              name="company_website_confirm"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </label>
+        </div>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">
+            Préparer la demande de diagnostic
+          </button>
+        </div>
+        <p
+          id="diagnostic-status"
+          class="status"
+          role="status"
+          aria-live="polite"
+        />
+      </form>
+    </div>
+  </dialog>
+)}

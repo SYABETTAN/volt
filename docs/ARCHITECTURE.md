@@ -23,7 +23,8 @@ Les pages importent les composants. Les composants lisent `site`. Ils n’invent
 - Indexation `noindex`
 - Pastilles de fiction visibles
 - Devis électricien simulé, sans coordonnées
-- Appel « Je veux un site comme celui-ci »
+- Aperçu « Visualiser mon futur site », offre « Je veux mon site » et diagnostic gratuit
+- Événements `volt:commerce` gardés dans le navigateur, sans cookie
 - Aucune donnée structurée d’entreprise
 - Demande de création de site via `mailto`
 
