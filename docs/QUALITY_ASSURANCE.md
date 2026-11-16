@@ -20,6 +20,10 @@ Le flux `.github/workflows/quality.yml` rejoue typecheck, lint, format, tests un
 - Un vrai appareil iOS et Android, au-delà de WebKit et Chromium headless
 - Le comportement de l’application Mail au clic sur `mailto`, qui dépend de la machine
 
+## Résultats mesurés le 16 novembre 2026
+
+Même protocole local que la veille : Lighthouse 12.6.1, une passe, mobile émulé, preview `http://127.0.0.1:4323/`. Performance 99, accessibilité 100, bonnes pratiques 100, SEO 69. LCP 1,8 s, CLS 0,035, TBT 0 ms. Le SEO reste limité par le `noindex`. Détail et comparaison dans `docs/audit/FINAL_AUDIT.md`.
+
 ## Résultats mesurés le 15 novembre 2026
 
 Mesures de laboratoire, sur la machine de développement, contre `astro preview` en local. Ce ne sont pas des données de terrain CrUX. L’INP réel n’est pas mesuré ici : le laboratoire donne un Total Blocking Time de 0 ms et un Max Potential FID de 20 ms.

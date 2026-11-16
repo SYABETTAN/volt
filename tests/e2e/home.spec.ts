@@ -13,6 +13,14 @@ test("affiche la démonstration et refuse l’indexation", async ({ page }) => {
     "content",
     /noindex/,
   );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://volt-paris-project.vercel.app/",
+  );
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+    "content",
+    "https://volt-paris-project.vercel.app/og.jpg",
+  );
   await expect(page.locator('script[type="application/ld+json"]')).toHaveCount(
     0,
   );
@@ -155,6 +163,29 @@ test("menu mobile", async ({ page, isMobile }) => {
   const dialog = page.getByRole("dialog", { name: "Menu" });
   await dialog.getByRole("link", { name: "Zone" }).click();
   await expect(page.locator("#zone")).toBeInViewport();
+});
+
+test("centre le dialogue des offres", async ({ page }, info) => {
+  test.skip(info.project.name !== "chromium", "géométrie mesurée sur Chromium");
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page
+    .getByRole("button", { name: "Je veux un site comme celui-ci" })
+    .first()
+    .click();
+  const dialog = page.getByRole("dialog", {
+    name: "Je veux un site comme celui-ci",
+  });
+  await expect(dialog).toBeVisible();
+  await expect
+    .poll(() =>
+      dialog.evaluate((node) => Number(getComputedStyle(node).opacity)),
+    )
+    .toBeGreaterThan(0.95);
+  const box = await dialog.boundingBox();
+  expect(box?.x ?? 0).toBeGreaterThan(40);
+  await expect(
+    dialog.getByRole("heading", { name: "Acquisition locale" }),
+  ).toBeVisible();
 });
 
 test("accessibilité automatisée", async ({ page }, info) => {

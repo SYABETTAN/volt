@@ -1,6 +1,6 @@
 ---
 import "../styles/global.css";
-import { site } from "../config/site";
+import { DEMO_ORIGIN, site } from "../config/site";
 import { serializeJsonLd, structuredData } from "../lib/schema";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
@@ -13,15 +13,15 @@ interface Props {
 const { title, description } = Astro.props;
 const fullTitle =
   site.mode === "demo" ? `${title} | Site de démonstration` : title;
-const canonical = Astro.site
-  ? new URL(Astro.url.pathname, Astro.site).href
-  : undefined;
+const origin =
+  Astro.site?.origin ?? (site.mode === "demo" ? DEMO_ORIGIN : undefined);
+const canonical = origin ? new URL(Astro.url.pathname, origin).href : undefined;
 const robots =
   site.indexing === "noindex"
     ? "noindex, nofollow, noarchive"
     : "index, follow";
 const schema = structuredData(site);
-const ogImage = Astro.site ? new URL("/og.jpg", Astro.site).href : undefined;
+const ogImage = origin ? new URL("/og.jpg", origin).href : undefined;
 ---
 
 <!doctype html>

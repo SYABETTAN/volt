@@ -11,6 +11,7 @@ import { zones } from "../data/zones";
 import { assertValidDeployment } from "../lib/deployment";
 import type { SiteConfig } from "../types/content";
 
+export const DEMO_ORIGIN = "https://volt-paris-project.vercel.app";
 export const DISCLAIMER = "Site de démonstration — entreprise fictive.";
 export const FICTION_REVIEWS = "Avis fictifs — exemples de présentation";
 export const FICTION_STATS = "Chiffres fictifs — exemples de mise en page";

@@ -48,7 +48,7 @@ Voir `docs/TEMPLATE_USAGE.md`. Le mode `client` ne se construit que si l’ident
 
 ## Dépôt et déploiement
 
-Dépôt public : [SYABETTAN/volt](https://github.com/SYABETTAN/volt). Site en ligne : [https://volt-samuel-abettans-projects.vercel.app](https://volt-samuel-abettans-projects.vercel.app). Le projet Vercel s’appelle `volt`, sur l’équipe Hobby « Samuel Abettan's projects ». Le site fictif reste `noindex`. `volt.vercel.app` appartient à un autre projet et n’est pas cette démonstration.
+Dépôt public : [SYABETTAN/volt](https://github.com/SYABETTAN/volt). Adresse à envoyer : [https://volt-paris-project.vercel.app](https://volt-paris-project.vercel.app). Le projet Vercel s’appelle `volt`, sur l’équipe Hobby « Samuel Abettan's projects ». Le site fictif reste `noindex`.
 
 ## Documentation
 

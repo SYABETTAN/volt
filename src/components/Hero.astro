@@ -24,6 +24,15 @@ import hero from "../assets/photos/hero-interior.jpg";
       <a class="btn btn-ghost" href="#realisations">
         Voir les réalisations
       </a>
+      {site.showAgencyCta && (
+        <button
+          class="btn btn-quiet hero-commercial"
+          type="button"
+          data-open="agency-dialog"
+        >
+          Je veux un site comme celui-ci
+        </button>
+      )}
     </div>
   </div>
   <figure>
