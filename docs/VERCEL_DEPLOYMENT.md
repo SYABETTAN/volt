@@ -32,6 +32,10 @@ Ne pas basculer vers un autre hébergeur en silence. Noter l’étape exacte : c
 
 Équipe « Samuel Abettan's projects » (`team_m6s5ebPCh7y7ubDmVfpfN6NV`), plan Hobby, projet `volt` (`prj_SQrfreXXyuw0gTIrL4JEtMix65mP`). Déploiement de production `dpl_3Ld35BwRtVF3gNLm7KpQ3B1nS25j`, commit `7a6327d31728654b4d2aac0bd4cbe626c1669287`.
 
-URL à envoyer : https://volt-samuel-abettans-projects.vercel.app
+URL à envoyer : https://volt-paris-project.vercel.app
 
-Vérifié : HTTPS, réponse 200 sans authentification, mention « Site de démonstration — entreprise fictive. », en-tête `X-Robots-Tag: noindex, nofollow, noarchive`. L’authentification Vercel ne s’applique qu’aux previews. `volt.vercel.app` est déjà pris par un autre site.
+Vérifié : HTTPS, réponse 200 sans authentification, mention « Site de démonstration — entreprise fictive. », en-tête `X-Robots-Tag: noindex, nofollow, noarchive`. L’authentification Vercel ne s’applique qu’aux previews. `volt.vercel.app` et `volt-paris.vercel.app` sont déjà pris par d’autres sites.
+
+## Publication du 16 novembre 2026
+
+Déploiement de production `dpl_5ygfYffhmApEnh93YBKatHdw2FNC`, commit `e5ca2dc57db6d5b04f00e878bea104d91f396599`, alias `volt-paris-project.vercel.app`. Canonique et image Open Graph présents. Dialogues centrés et opaques. Aucune erreur console ni requête en échec relevée sur la page d’accueil. `PUBLIC_SITE_URL` n’est pas définie dans Vercel : l’origine de la démo est écrite dans le code.
